@@ -1,87 +1,105 @@
 // ==========================================================================
-// WEATHER APP - JAVASCRIPT LOGIC WITH DETAILED EXPLANATIONS
+// INTERACTIVE WEATHER APP LOGIC
 // ==========================================================================
 
-// 1. ΡΥΘΜΙΣΕΙΣ API (OpenWeatherMap)
-// Το apiKey είναι το μοναδικό αναγνωριστικό για να μας επιτρέψει η υπηρεσία να πάρουμε δεδομένα
-const apiKey = "8d8b9e4a3b8d1a2c3d4e5f6a7b8c9d0e"; 
-
-// Το βασικό URL της OpenWeatherMap. Παράμετροι:
-// units=metric: Επιστρέφει θερμοκρασίες σε Celsius (C)
-// lang=el: Επιστρέφει τις περιγραφές καιρού στα Ελληνικά
-// q=: Περιμένει το όνομα της πόλης στο τέλος
+// Βάλε εδώ το δικό σου API Key από το OpenWeatherMap μέσα στα εισαγωγικά
+const apiKey = "ΕΔΩ_ΒΑΖΕΙΣ_ΤΟ_KEY_ΣΟΥ"; 
 const apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric&lang=el&q=";
 
-// 2. ΕΠΙΛΟΓΗ ΣΤΟΙΧΕΙΩΝ DOM (Document Object Model)
-// Συνδέουμε τις μεταβλητές της JavaScript με τα HTML عناصر μέσω των id τους
-const cityInput = document.getElementById("city-input");      // Το πεδίο που πληκτρολογεί ο χρήστης
-const searchBtn = document.getElementById("search-btn");      // Το κουμπί αναζήτησης
+// DOM Elements
+const weatherCard = document.getElementById("weather-card");
+const cityInput = document.getElementById("city-input");
+const searchBtn = document.getElementById("search-btn");
 
-const weatherInfo = document.getElementById("weather-info");  // Το container των αποτελεσμάτων
-const cityName = document.getElementById("city-name");        // Το σημείο για το όνομα της πόλης
-const temperature = document.getElementById("temperature");  // Το σημείο για τη θερμοκρασία
-const description = document.getElementById("description");  // Το σημείο για την περιγραφή καιρού
-const humidity = document.getElementById("humidity");        // Το σημείο για την υγρασία
-const wind = document.getElementById("wind");                // Το σημείο για τον άνεμο
+const weatherInfo = document.getElementById("weather-info");
+const cityName = document.getElementById("city-name");
+const weatherIcon = document.getElementById("weather-icon");
+const temperature = document.getElementById("temperature");
+const description = document.getElementById("description");
+const feelsLikeTemp = document.getElementById("feels-like-temp");
+const humidity = document.getElementById("humidity");
+const wind = document.getElementById("wind");
+const pressure = document.getElementById("pressure");
 
-const errorMessage = document.getElementById("error-message");// Το σημείο για μηνύματα σφάλματος
+const errorMessage = document.getElementById("error-message");
 
-// 3. ΑΣΥΓΧΡΟΝΗ ΣΥΝΑΡΤΗΣΗ ΑΝΤΛΗΣΗΣ ΔΕΔΟΜΕΝΩΝ (Async/Await)
-// Χρησιμοποιούμε async επειδή η αίτηση στο διαδίκτυο παίρνει κάποιο χρόνο μέχρι να επιστρέψει απάντηση
+// Ασύγχρονη συνάρτηση με βελτιωμένο έλεγχο σφαλμάτων
 async function checkWeather(city) {
-  
-  // Αν ο χρήστης δεν πληκτρολόγησε τίποτα (ή έβαλε μόνο κενά), σταματάμε την εκτέλεση
   if (!city.trim()) return;
 
   try {
-    // Η fetch() στέλνει το αίτημα στο API. Η await περιμένει να ληφθεί η απάντηση πριν συνεχίσει
     const response = await fetch(apiUrl + city + `&appid=${apiKey}`);
 
-    // Αν η πόλη δεν βρεθεί, το API επιστρέφει HTTP Status 404
+    // 1. Αν το API key δεν έχει ενεργοποιηθεί ακόμα ή είναι λάθος (Status 401)
+    if (response.status === 401) {
+      showError("Το API Key δεν έχει ενεργοποιηθεί ακόμα (περιμένετε λίγα λεπτά) ή είναι λάθος.");
+      return;
+    }
+
+    // 2. Αν η πόλη δεν βρέθηκε (Status 404)
     if (response.status === 404) {
       showError("Η πόλη δεν βρέθηκε. Παρακαλώ δοκιμάστε ξανά.");
       return;
     }
 
-    // Μετατρέπουμε την ακατέργαστη απάντηση σε αντικείμενο JSON
+    if (!response.ok) {
+      showError(`Σφάλμα API: Status ${response.status}`);
+      return;
+    }
+
     const data = await response.json();
 
-    // Ενημερώνουμε τα κείμενα στην HTML σελίδα με τα πραγματικά δεδομένα από το API
-    cityName.textContent = data.name + ", " + data.sys.country;  // Π.χ. "Athens, GR"
-    temperature.textContent = Math.round(data.main.temp);         // Στρογγυλοποίηση θερμοκρασίας
-    description.textContent = data.weather[0].description;       // Π.χ. "καθαρός ουρανός"
-    humidity.textContent = data.main.humidity + "%";              // Π.χ. "65%"
-    wind.textContent = Math.round(data.wind.speed * 3.6) + " km/h"; // Μετατροπή m/s σε km/h
+    // Ενημέρωση Κειμένων
+    cityName.textContent = data.name + ", " + data.sys.country;
+    temperature.textContent = Math.round(data.main.temp);
+    description.textContent = data.weather[0].description;
+    feelsLikeTemp.textContent = Math.round(data.main.feels_like);
+    humidity.textContent = data.main.humidity + "%";
+    wind.textContent = Math.round(data.wind.speed * 3.6) + " km/h";
+    pressure.textContent = data.main.pressure + " hPa";
 
-    // Αφαιρούμε την κλάση "hidden" για να εμφανιστεί η κάρτα αποτελεσμάτων
+    // Εικονίδιο & Theme
+    const iconCode = data.weather[0].icon;
+    weatherIcon.src = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
+    updateTheme(data.weather[0].main);
+
     weatherInfo.classList.remove("hidden");
-    
-    // Κρύβουμε τυχόν προηγούμενο μήνυμα σφάλματος
     errorMessage.classList.add("hidden");
 
   } catch (error) {
-    // Αν κοπεί το ίντερνετ ή υπάρξει άλλο τεχνικό πρόβλημα
-    showError("Προέκυψε σφάλμα κατά τη σύνδεση. Ελέγξτε τη σύνδεσή σας.");
+    console.error("Σφάλμα:", error);
+    showError("Προέκυψε σφάλμα δικτύου. Ελέγξτε τη σύνδεσή σας.");
   }
 }
 
-// 4. ΒΟΗΘΗΤΙΚΗ ΣΥΝΑΡΤΗΣΗ ΕΜΦΑΝΙΣΗΣ ΣΦΑΛΜΑΤΩΝ
-function showError(msg) {
-  errorMessage.textContent = msg;           // Βάζουμε το κείμενο σφάλματος
-  errorMessage.classList.remove("hidden");  // Εμφανίζουμε το μήνυμα
-  weatherInfo.classList.add("hidden");       // Κρύβουμε τα αποτελέσματα καιρού
+// Συνάρτηση αλλαγής Theme της Κάρτας
+function updateTheme(weatherState) {
+  weatherCard.classList.remove("theme-clear", "theme-clouds", "theme-rain", "theme-snow");
+
+  if (weatherState === "Clear") {
+    weatherCard.classList.add("theme-clear");
+  } else if (weatherState === "Clouds") {
+    weatherCard.classList.add("theme-clouds");
+  } else if (weatherState === "Rain" || weatherState === "Drizzle" || weatherState === "Thunderstorm") {
+    weatherCard.classList.add("theme-rain");
+  } else if (weatherState === "Snow") {
+    weatherCard.classList.add("theme-snow");
+  }
 }
 
-// 5. EVENT LISTENERS (Ακροατές Συμβάντων)
+// Βοηθητική Συνάρτηση για Σφάλματα
+function showError(msg) {
+  errorMessage.textContent = msg;
+  errorMessage.classList.remove("hidden");
+  weatherInfo.classList.add("hidden");
+  weatherCard.classList.remove("theme-clear", "theme-clouds", "theme-rain", "theme-snow");
+}
 
-// Όταν ο χρήστης κάνει κλικ στο κουμπί Search
-searchBtn.addEventListener("click", () => {
-  checkWeather(cityInput.value); // Καλούμε τη συνάρτηση περνώντας την τιμή του input
-});
+// Event Listeners
+searchBtn.addEventListener("click", () => checkWeather(cityInput.value));
 
-// Όταν ο χρήστης πατήσει ένα πλήκτρο στο πληκτρολόγιο ενώ βρίσκεται στο input
 cityInput.addEventListener("keydown", (event) => {
-  if (event.key === "Enter") {   // Αν το πλήκτρο που πατήθηκε είναι το Enter
+  if (event.key === "Enter") {
     checkWeather(cityInput.value);
   }
 });
