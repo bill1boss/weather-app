@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<!-- lang="el": Δηλώνει στον browser και στις μηχανές αναζήτησης ότι το περιεχόμενο είναι στα ελληνικά -->
+<html lang="el">
+<head>
+  <!-- UTF-8: Εξασφαλίζει τη σωστή εμφάνιση ελληνικών χαρακτήρων και ειδικών συμβόλων -->
+  <meta charset="UTF-8">
+  
+  <!-- Viewport settings: Προσαρμόζει αυτόματα τη σελίδα στις οθόνες κινητών & tablets (Responsive) -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Τίτλος που εμφανίζεται πάνω στην καρτέλα (tab) του browser -->
+  <title>Weather App | Vasileios Katsotis</title>
+  
+  <!-- Συνδέουμε το εξωτερικό αρχείο CSS για τη διαμόρφωση της εμφάνισης -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Κεντρική κάρτα της εφαρμογής (id="weather-card" για αλλαγή theme μέσω JS) -->
+  <div class="card" id="weather-card">
+    
+    <!-- HEADER: Τίτλος και υπότιτλος της εφαρμογής -->
+    <header class="app-header">
+      <h1>Weather App</h1>
+      <p>Πρόγνωση καιρού σε πραγματικό χρόνο</p>
+    </header>
+
+    <!-- SEARCH BOX: Φόρμα εισαγωγής πόλης και κουμπί αναζήτησης -->
+    <div class="search-box">
+      <!-- input: Πεδίο κειμένου όπου ο χρήστης πληκτρολογεί την πόλη.
+           autocomplete="off": Απενεργοποιεί την αυτόματη προτεινόμενη συμπλήρωση -->
+      <input type="text" id="city-input" placeholder="Εισάγετε πόλη (π.χ. Athens)..." autocomplete="off">
+      
+      <!-- button: Το κουμπί που εκτελεί την αναζήτηση -->
+      <button id="search-btn">Search</button>
+    </div>
+
+    <!-- WEATHER INFO CONTAINER: Εμφανίζει τα αποτελέσματα του καιρού.
+         Η κλάση "hidden" το κρατάει κρυμμένο μέχρι να επιστρέψουν τα δεδομένα από το API. -->
+    <div class="weather-info hidden" id="weather-info">
+      
+      <!-- id="city-name": Θα ενημερωθεί δυναμικά από τη JS με το όνομα της πόλης -->
+      <h2 id="city-name">--</h2>
+
+      <!-- Κύρια Περιοχή Καιρού με Δυναμικό Εικονίδιο -->
+      <div class="weather-main">
+        <!-- id="weather-icon": Το εικονίδιο καιρού που φορτώνεται αυτόματα από το OpenWeatherMap -->
+        <img id="weather-icon" src="" alt="Weather Icon" class="weather-icon">
+        <div class="temp-display">
+          <span id="temperature">--</span>°C
+        </div>
+      </div>
+      
+      <!-- Περιγραφή & Αίσθηση Θερμοκρασίας -->
+      <p id="description" class="weather-desc">--</p>
+      <p class="feels-like">Αίσθηση ως <span id="feels-like-temp">--</span>°C</p>
+
+      <!-- DETAIL GRID: Πλέγμα 3 παραμέτρων (Υγρασία, Άνεμος, Πίεση) -->
+      <div class="weather-details">
+        
+        <!-- Υγρασία -->
+        <div class="detail-item">
+          <span class="label">Υγρασία</span>
+          <span id="humidity" class="value">--%</span>
+        </div>
+
+        <!-- Ταχύτητα Ανέμου -->
+        <div class="detail-item">
+          <span class="label">Άνεμος</span>
+          <span id="wind" class="value">-- km/h</span>
+        </div>
+
+        <!-- Ατμοσφαιρική Πίεση -->
+        <div class="detail-item">
+          <span class="label">Πίεση</span>
+          <span id="pressure" class="value">-- hPa</span>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ERROR MESSAGE: Εμφανίζει μηνύματα σφάλματος (π.χ. αν δεν βρεθεί η πόλη) -->
+    <p id="error-message" class="error-msg hidden"></p>
+    
+  </div>
+
+  <!-- Σύνδεση του αρχείου JavaScript στο τέλος του body -->
+  <script src="script.js"></script>
+</body>
+</html>
