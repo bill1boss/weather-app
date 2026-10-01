@@ -3,7 +3,7 @@
 // ==========================================================================
 
 // Βάλε εδώ το δικό σου API Key από το OpenWeatherMap μέσα στα εισαγωγικά
-const apiKey = "ΕΔΩ_ΒΑΖΕΙΣ_ΤΟ_KEY_ΣΟΥ"; 
+const apiKey = "693cad648dfa488bcfb6cd48bcc426c8"; 
 const apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric&lang=el&q=";
 
 // DOM Elements
