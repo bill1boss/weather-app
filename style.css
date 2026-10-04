@@ -7,17 +7,17 @@
 
 body {
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-  overflow: hidden;
+  padding: 20px 0;
 }
 
 .app-container {
   width: 100%;
-  max-width: 450px;
+  max-width: 480px;
   padding: 20px;
 }
 
@@ -145,6 +145,7 @@ body {
   padding: 15px 10px;
   border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 25px;
 }
 
 .detail-item {
@@ -179,6 +180,59 @@ body {
 .detail-item .value {
   font-size: 0.9rem;
   font-weight: 600;
+  color: #f8fafc;
+}
+
+/* Forecast Styles */
+.forecast-section {
+  text-align: left;
+  margin-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 20px;
+}
+
+.forecast-section h3 {
+  font-size: 1rem;
+  margin-bottom: 15px;
+  color: #38bdf8;
+}
+
+.forecast-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.forecast-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 12px 8px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.forecast-card:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-3px);
+}
+
+.forecast-day {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #cbd5e1;
+  margin-bottom: 6px;
+}
+
+.forecast-card img {
+  width: 45px;
+  height: 45px;
+  margin: 0 auto;
+}
+
+.forecast-temp {
+  font-size: 0.95rem;
+  font-weight: 700;
   color: #f8fafc;
 }
 
