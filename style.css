@@ -6,7 +6,7 @@
 }
 
 body {
-  background-color: #121212;
+  background-color: #0d1117; /* Σκούρο/Μπλε φόντο σελίδας */
   color: #fff;
   display: flex;
   justify-content: center;
@@ -15,22 +15,24 @@ body {
   padding: 20px;
 }
 
-.todo-container {
-  background: #1e1e1e;
+/* Κεντρική κάρτα εφαρμογής */
+.weather-card {
+  background: #161b22; /* Σκούρο μπλε/γκρι πλαίσιο */
   padding: 30px;
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
   width: 100%;
-  max-width: 400px;
+  max-width: 420px;
+  text-align: center;
 }
 
 h1 {
   font-size: 1.8rem;
   margin-bottom: 20px;
-  text-align: center;
+  color: #fff;
 }
 
-#todo-form {
+.search-box {
   display: flex;
   gap: 10px;
   margin-bottom: 20px;
@@ -39,62 +41,91 @@ h1 {
 input[type="text"] {
   flex: 1;
   padding: 12px;
-  border: 1px solid #333;
+  border: 1px solid #30363d;
   border-radius: 6px;
-  background: #2a2a2a;
-  color: #fff;
   font-size: 1rem;
   outline: none;
+  background: #0d1117;
+  color: #fff;
 }
 
 input[type="text"]:focus {
-  border-color: #007acc;
+  border-color: #58a6ff;
 }
 
 button {
   padding: 12px 18px;
-  background-color: #007acc;
+  background-color: #238636;
   color: white;
   border: none;
   border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
+  transition: background 0.2s;
 }
 
 button:hover {
-  background-color: #005999;
+  background-color: #2ea043;
 }
 
-ul {
-  list-style: none;
+/* ΚΟΥΤΙ ΠΛΗΡΟΦΟΡΙΩΝ ΚΑΙΡΟΥ (Ίδιο φόντο με τα κάτω κουτάκια) */
+.weather-info {
+  margin-top: 15px;
+  padding: 20px;
+  background: #21262d; /* Ίδιο φόντο με τα forecast cards */
+  border: 1px solid #30363d; /* Ίδιο περίγραμμα */
+  border-radius: 10px;
+  color: #c9d1d9; /* Ανοιχτόχρωμο κείμενο */
 }
 
-li {
+.weather-info h2 {
+  font-size: 1.6rem;
+  margin-bottom: 5px;
+  color: #58a6ff; /* Μπλε έντονος τίτλος πόλης */
+}
+
+.weather-info p {
+  font-size: 1.1rem;
+  margin: 6px 0;
+  color: #f0f6fc;
+  font-weight: 500;
+}
+
+.forecast-section {
+  margin-top: 20px;
+}
+
+.forecast-section h3 {
+  font-size: 1.2rem;
+  margin-bottom: 12px;
+  color: #fff;
+}
+
+.forecast-container {
   display: flex;
+  gap: 10px;
   justify-content: space-between;
-  align-items: center;
-  padding: 12px;
-  background: #2a2a2a;
-  border-radius: 6px;
-  margin-bottom: 8px;
 }
 
-.todo-text {
-  cursor: pointer;
+/* Κουτάκια πρόγνωσης 3 ημερών */
+.forecast-card {
+  background: #21262d;
+  border: 1px solid #30363d;
+  padding: 12px 8px;
+  border-radius: 10px;
   flex: 1;
+  font-size: 0.9rem;
+  color: #c9d1d9;
 }
 
-li.completed .todo-text {
-  text-decoration: line-through;
-  color: #888;
+.forecast-card p {
+  color: #c9d1d9;
 }
 
-.delete-btn {
-  background: transparent;
-  padding: 4px 8px;
-  font-size: 1rem;
+.forecast-card strong {
+  color: #58a6ff;
 }
 
-.delete-btn:hover {
-  background: rgba(255, 0, 0, 0.2);
+.hidden {
+  display: none;
 }
